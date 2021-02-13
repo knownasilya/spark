@@ -20,6 +20,7 @@ module.exports = {
     browser: true,
   },
   rules: {},
+  excludedFiles: ['blueprints/server/'],
   overrides: [
     // node files
     {
