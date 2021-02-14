@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  description: ''
+  description: '',
 
   // locals(options) {
   //   // Return custom template variables here.
@@ -10,7 +10,7 @@ module.exports = {
   //   };
   // }
 
-  // afterInstall(options) {
-  //   // Perform extra work here.
-  // }
+  afterInstall(options) {
+    return this.addAddonToProject('ember-apollo-client');
+  },
 };
