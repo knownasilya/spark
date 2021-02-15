@@ -8,10 +8,14 @@ import { Roles } from '../common/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../roles.guard';
 import { ApolloError } from 'apollo-server-express';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Resolver(() => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly mailerService: MailerService
+  ) {}
 
   @Query(() => User)
   async user(@Args('id') id: string) {
@@ -28,7 +32,17 @@ export class UsersResolver {
       email,
       name,
       password,
-      role: AccountRole.ADMIN,
+      role: AccountRole.VIEWER,
+    });
+
+    this.mailerService.sendMail({
+      to: email,
+      subject: 'Welcome!',
+      template: 'viewer-registered',
+      context: {
+        user,
+        confirmUrl: '#',
+      },
     });
 
     return user;
@@ -49,7 +63,15 @@ export class UsersResolver {
       role: AccountRole.EDITOR,
     });
 
-    // TODO: send invite email
+    this.mailerService.sendMail({
+      to: email,
+      subject: `You're invited!`,
+      template: 'editor-invited',
+      context: {
+        user,
+        inviteUrl: '#',
+      },
+    });
 
     return user;
   }
