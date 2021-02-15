@@ -26,7 +26,7 @@ async function createUser({
 
   await app.init();
   try {
-    let res = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post('/graphql')
       .send({
         operationName: 'Register',
