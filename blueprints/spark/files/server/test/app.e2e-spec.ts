@@ -17,19 +17,32 @@ describe('AppController (e2e)', () => {
 
   it('/ping (GET)', () => {
     return request(app.getHttpServer())
-      .get('/ping')
+      .get('/api/ping')
       .expect(200)
       .expect('OK');
   });
 
-  it('Can register a user', () => {
-    return request(app.getHttpServer())
+  it('Can register a user', async () => {
+    const response = await request(app.getHttpServer())
       .post('/graphql')
       .send({
         operationName: null,
-        variables: {},
-        query: '{getProducts{id, price}}',
+        variables: {
+          name: 'Test User',
+          email: 'test@example.com',
+          password: 'test123',
+        },
+        query: `mutation RegisterUser ($name: string, $email: string, $password: string) { 
+          registerUser(name: $name, email: $email, password: $password) {
+            id
+            name
+            email
+          }
+        }`,
       })
       .expect(200);
+    console.log(response.body);
+
+    return response;
   });
 });

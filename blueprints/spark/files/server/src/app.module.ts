@@ -66,7 +66,7 @@ const isLocal = process.env.LOCAL === 'true' ? true : false;
       debug: isLocal,
       playground: isLocal,
     }),
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot({ ...ormconfig, keepConnectionAlive: true }),
     AuthModule,
     UsersModule,
     AccountsModule,

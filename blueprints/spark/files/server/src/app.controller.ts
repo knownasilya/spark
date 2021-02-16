@@ -31,6 +31,7 @@ export class AppController {
 
   @Get('/*')
   sendClientIndex(@Res() res) {
-    res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+    return {};
+    // res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
   }
 }
