@@ -7,6 +7,7 @@ import * as compression from 'compression';
 import * as helmet from 'helmet';
 import * as expressEnforcesSsl from 'express-enforces-ssl';
 import { AppModule } from './app.module';
+import { ServeStaticFilter } from './serve-static.filter';
 
 const ONE_YEAR = 31536000;
 
@@ -33,6 +34,7 @@ async function bootstrap() {
     }
 
     app.useStaticAssets(path.join(process.cwd(), 'client', 'dist'));
+    app.useGlobalFilters(new ServeStaticFilter());
 
     await app.listen(port);
     console.log(`Started server on http://localhost:${port}`);
